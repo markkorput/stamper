@@ -1,0 +1,4 @@
+ofxSvg
+ofxThreadedImageLoader
+ofxXmlSettings
+ofxUI-master
