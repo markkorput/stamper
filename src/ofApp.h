@@ -1,5 +1,6 @@
 #pragma once
 
+#include <math.h>
 #include "ofMain.h"
 #include "ofxThreadedImageLoader.h"
 
@@ -21,6 +22,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
     private:
+        int winW, winH;
         void stamp(int x, int y);
 
         // screenbuffer

@@ -2,7 +2,6 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    int winW, winH;
     winW = 800;
     winH = 600;
     
@@ -30,15 +29,24 @@ void ofApp::update(){
 
 }
 
+
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(255,255,255);
+    
+    float timer = ofGetElapsedTimeMillis() * 0.005;
+    stamp(400+sin(timer) * 100, 300+cos(timer) * 100);
+	
     fbo.draw(0,0);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    if(key == 13){ // RETURN
+        ofImage screen;
+        screen.grabScreen(0,0, winW, winH);
+        screen.saveImage("screen-"+ofToString(ofGetElapsedTimeMillis())+".png");
+    }
 }
 
 //--------------------------------------------------------------
@@ -83,7 +91,8 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 //--------------------------------------------------------------
 void ofApp::stamp(int x, int y){
-    ofImage* img = stampImages.at(ofRandom(stampImages.size()));
+    int imageIndex = (ofGetElapsedTimeMillis()/500 % stampImages.size());
+    ofImage* img = stampImages.at(imageIndex);
 
     fbo.begin();
         img->draw(x-stampImage.getWidth()/2, y-stampImage.getHeight()/2);
