@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxThreadedImageLoader.h"
 
 class ofApp : public ofBaseApp{
 
@@ -18,5 +19,13 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		
+
+    private:
+        void stamp(int x, int y);
+
+        // screenbuffer
+        ofFbo fbo;
+
+        ofxThreadedImageLoader imgLoader;
+        ofImage stampImage;
 };
