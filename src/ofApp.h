@@ -28,4 +28,5 @@ class ofApp : public ofBaseApp{
 
         ofxThreadedImageLoader imgLoader;
         ofImage stampImage;
+        vector<ofImage*> stampImages;
 };

@@ -5,8 +5,16 @@ void ofApp::setup(){
     int winW, winH;
     winW = 800;
     winH = 600;
+    
+    imgLoader.loadFromDisk(stampImage, "face01.png");
+    
+    for(int i=0; i<8; i++){
+        ofImage *tmpImage = new ofImage();
+        imgLoader.loadFromDisk(*tmpImage, "face0"+ofToString(i+1)+".png");
+        stampImages.push_back(tmpImage);
+    }
+    
 
-    imgLoader.loadFromDisk(this->stampImage, "face01.png");
 
     ofSetWindowShape(winW, winH);
 
@@ -25,11 +33,6 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(255,255,255);
-
-    fbo.begin();
-        ofRect(10, 10, 20, 20);
-    fbo.end();
-
     fbo.draw(0,0);
 }
 
@@ -80,7 +83,9 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 //--------------------------------------------------------------
 void ofApp::stamp(int x, int y){
+    ofImage* img = stampImages.at(ofRandom(stampImages.size()));
+
     fbo.begin();
-        stampImage.draw(x-stampImage.getWidth()/2, y-stampImage.getHeight()/2);
+        img->draw(x-stampImage.getWidth()/2, y-stampImage.getHeight()/2);
     fbo.end();
 }
