@@ -5,16 +5,11 @@ void ofApp::setup(){
     winW = 800;
     winH = 600;
     
-    imgLoader.loadFromDisk(stampImage, "face01.png");
-    
-    for(int i=0; i<8; i++){
-        ofImage *tmpImage = new ofImage();
-        imgLoader.loadFromDisk(*tmpImage, "face0"+ofToString(i+1)+".png");
-        stampImages.push_back(tmpImage);
+    stampImages.resize(8);
+    for(int i=0; i<stampImages.size(); i++){
+        imgLoader.loadFromDisk(stampImages[i], "face0"+ofToString(i+1)+".png");
     }
     
-
-
     ofSetWindowShape(winW, winH);
 
     // Allocate framebuffer and initialize with a transparant background
@@ -22,6 +17,9 @@ void ofApp::setup(){
     fbo.begin();
         ofBackground(0,0,0, 0);
     fbo.end();
+    
+    // eventHandlers
+    ofAddListener(stampEvent, this, &ofApp::onStamp);
 }
 
 //--------------------------------------------------------------
@@ -33,11 +31,17 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(255,255,255);
-    
+
     float timer = ofGetElapsedTimeMillis() * 0.005;
-    stamp(400+sin(timer) * 100, 300+cos(timer) * 100);
-	
+    ofVec2f pos(400+sin(timer) * 100, 300+cos(timer) * 100);
+    ofNotifyEvent(stampEvent, pos, this);
+ 	
     fbo.draw(0,0);
+}
+
+//--------------------------------------------------------------
+void ofApp::exit(){
+	imgLoader.stopThread();
 }
 
 //--------------------------------------------------------------
@@ -61,12 +65,14 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-    stamp(x,y);
+    ofVec2f vec(x,y);
+    ofNotifyEvent(stampEvent, vec, this);
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    stamp(x,y);
+    ofVec2f pos(x,y);
+    ofNotifyEvent(stampEvent, pos, this);
 }
 
 //--------------------------------------------------------------
@@ -92,9 +98,13 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 //--------------------------------------------------------------
 void ofApp::stamp(int x, int y){
     int imageIndex = (ofGetElapsedTimeMillis()/500 % stampImages.size());
-    ofImage* img = stampImages.at(imageIndex);
+    ofImage img = stampImages.at(imageIndex);
 
     fbo.begin();
-        img->draw(x-stampImage.getWidth()/2, y-stampImage.getHeight()/2);
+        img.draw(x-img.getWidth()/2, y-img.getHeight()/2);
     fbo.end();
+}
+
+void ofApp::onStamp(ofVec2f &pos){
+    stamp(pos.x, pos.y);
 }

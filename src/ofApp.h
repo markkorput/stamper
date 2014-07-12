@@ -10,6 +10,7 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+        void exit();
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -29,6 +30,8 @@ class ofApp : public ofBaseApp{
         ofFbo fbo;
 
         ofxThreadedImageLoader imgLoader;
-        ofImage stampImage;
-        vector<ofImage*> stampImages;
+        vector<ofImage> stampImages;
+    
+        ofEvent<ofVec2f> stampEvent;
+        void onStamp(ofVec2f &pos);
 };
