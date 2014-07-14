@@ -42,4 +42,8 @@ class ofApp : public ofBaseApp{
         // stamping
         ofEvent<ofVec2f> stampEvent;
         void onStamp(ofVec2f &pos);
+
+        // fading stuff
+        bool fading=false;
+        ofColor fadingColor = ofColor(255, 255, 255, 1.4);
 };

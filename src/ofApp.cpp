@@ -30,7 +30,7 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     float timer = ofGetElapsedTimeMillis() * 0.005;
-    ofVec2f pos(400+sin(timer) * 100, 300+cos(timer) * 100);
+    ofVec2f pos(400+cos(timer*0.5+PI*0.25) * 200, 300+cos(timer) * 100);
 
     // let's change the image
     int imageIndex = (ofGetElapsedTimeMillis()/500 % stampImages.size());
@@ -51,6 +51,17 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(255,255,255);
+    
+    if(fading){
+        fbo.begin();
+            ofPushStyle();
+                ofSetColor(fadingColor);
+                ofFill();
+                ofRect(0,0,winW,winH);
+            ofPopStyle();
+        fbo.end();
+    }
+
     fbo.draw(0,0);
 }
 
@@ -68,6 +79,7 @@ void ofApp::keyPressed(int key){
     }
     
     if(key == 99) tinting = !tinting; // 'c' toggles tinting
+    if(key == 102) fading = !fading; // 'f' toggles fading
 }
 
 //--------------------------------------------------------------
