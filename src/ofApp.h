@@ -27,11 +27,19 @@ class ofApp : public ofBaseApp{
         void stamp(int x, int y);
 
         // screenbuffer
-        ofFbo fbo;
+        ofFbo fbo, hueFbo;
 
         ofxThreadedImageLoader imgLoader;
         vector<ofImage> stampImages;
-    
+        ofImage *currentImage;
+
+        // tinting stuff
+        bool tinting=false;
+        ofColor tintColor;
+        ofColor getTintColor();
+        void applyTint(ofFbo* _fbo);
+
+        // stamping
         ofEvent<ofVec2f> stampEvent;
         void onStamp(ofVec2f &pos);
 };
